@@ -42,9 +42,7 @@
 
             <!-- View Search Results -->
 
-            <!-- View whole catalogue -->
-<hr>
-<h3>Browse the catalogue</h3>
+     
 
     <div class="searchresults">
         

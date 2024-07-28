@@ -50,7 +50,7 @@
         <tr>
             <td><label for="gender">Gender</label></td>
             <td>
-            <select name="gender" id="gender" class="medium-input">
+            <select name="gender" id="gender" class="medium-input" style="padding: 5px;">
                 <option value="Female">Female</option>                
                 <option value="Male">Male</option>
                 <option value="Other">Other</option>
@@ -60,12 +60,6 @@
         <tr>
             <td><label for="dob">Date of birth</label></td>
             <td><input type="date" name="dob"  value='<?= isset($borrower['dob']) ? htmlentities($borrower['dob']) : '' ?>'></td>
-        </tr>
-        <tr>
-            <td><label for="age">Age</label></td>
-            <td>
-                <input name="age" type="number" min="0"  class="x-short-input">
-            </td>
         </tr>
     
     </table>

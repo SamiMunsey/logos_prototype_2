@@ -1,8 +1,36 @@
 <?php
     $root = $_SERVER['DOCUMENT_ROOT'];
+    include $root."/logos/controller/DAO.php";
+
+if (isset($_GET['id'])) {
+
+    // Get $id from the URL
+    $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+
+    try {
+
+        $dao = new Dao;
+
+        $dao->delete('loan', 'resource_id', $id);
+
+        $dao = NULL;
+
+        $message="success";
+
+    } catch (Exception $e) {
+
+        $message = 'Error: ' . $e->getMessage();
+        $message = trim(preg_replace('/\s+/', ' ', $message));
+
+    }
+
     
 
-include $root."/logos/controller/DAO.php";
+    header('location:' . '/logos/view/return.php? ' . $message);
+
+}
+
+/*
 
 
 try {
@@ -28,3 +56,4 @@ try {
 
     header('location:' . '/logos/view/return.php? ' . $message);
 
+*/

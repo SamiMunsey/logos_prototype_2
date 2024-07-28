@@ -18,25 +18,35 @@ class Dao {
         }
     }
 
-    //--------------- 1: CREATE -----------------//
+    //--------------- 1: CREATE RECORD -----------------//
 
+//for use when the record should never be updated
 
     function create($tableName, $columnNames) {
 
+    //Step 1: Create the query statement and pass it to the query for preparation 
+
         $columnList = "";
+        $valuesList = "";
+        
 
-        $table = $tableName;
         $columns = $columnNames;
+        $table = $tableName;
 
-        foreach($columns as $column) {
-            $columnList .= "$column, ";
+        foreach ($columns as $column) {
+            $columnList .= "$column,";
+            $valuesList .= ":$column,";
         }
+        
+        $columnList = substr($columnList, 0, -1);
+        $valuesList = substr($valuesList, 0, -1);
 
-        $columnList = substr($columnList, 0, -2);
-
-        $queryStmt = "INSERT INTO $table ($columnList) VALUES ($columnList)";
-
+                
+        $queryStmt = "INSERT INTO $table ($columnList) VALUES ($valuesList)";
         $query = $this->db->prepare($queryStmt);
+
+
+        //Step 2: Prepare the bind message and use it to execute the query      
 
         $bindArray = array();
 
@@ -47,19 +57,14 @@ class Dao {
             $bindArray = array_merge($bindArray, [${$column} => $_POST[$column] ?? '']);
         }
 
-        ${$xPkColumn} = $xPkColumn;
-        $bindArray = array_merge($bindArray, [${$xPkColumn} => $_POST[$xPkColumn] ?? '']);
-
         $query->execute($bindArray);
-
     }
 
-    //--------- 1 & 3: CREATE or UPDATE ---------//
 
-//pkColumn is for the primary key; xPkColumn is for the primary key of the
-//main table with which the record is primarily associated with
+    //--------- 1 & 3: CREATE or UPDATE RECORD ---------//
+
+    //pkColumn is for the primary key; xPkColumn is for the primary key of the main table with which the record is primarily associated with
     function create_update($tableName, $columnNames, $pkColumnName, $xPkColumnName) {
-
 
         //Step 1: Create the query statement and pass it to the query for preparation 
 
@@ -88,9 +93,7 @@ class Dao {
         $query = $this->db->prepare($queryStmt);
 
 
-    //Step 2: Prepare the bind message and use it to execute the query
-
-       
+        //Step 2: Prepare the bind message and use it to execute the query       
 
         $bindArray = array();
 
@@ -111,7 +114,7 @@ class Dao {
 
 
 
-   //----------- 2: READ ----------//
+   //----------- 2: READ RECORD(S) ----------//
 
    //Read a specific entry from a table
 
@@ -146,7 +149,7 @@ class Dao {
 
     
 
-   //---------- 4: DELETE ---------//
+   //---------- 4: DELETE RECORD ---------//
 
 
     function delete($tableName, $pkColumnName, $xPkColumnName) {

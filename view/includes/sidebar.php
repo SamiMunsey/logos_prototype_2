@@ -37,11 +37,12 @@
     <i class="fa fa-caret-down"></i>
   </button>
   <div class="dropdown-container">
-    <a href="/logos/view/issue.php">Issue</a>
-    <a href="/logos/view/return.php">Bulk return</a>
-    <a href="/logos/view/current_loans.php">Current loans</a>
+    <a href="/logos/view/issue.php">Issue loans</a>
+    <a href="/logos/view/return.php">Return loans</a>
+    <a href="/logos/view/current_loans.php">View current loans</a>    
   </div>
-  <a href="/logos/CC/index.php">Help</a>
+  <a href="/logos/view/settings.php">Settings</a>
+  <a href="/logos/README.html">Help</a>
 </div>
 
 <?php include $root."/logos/model/dropdown_script.php" ?>

@@ -99,11 +99,10 @@ CREATE TABLE guardian (
 -- LOANS
 
 CREATE TABLE loan (
-    resource_id INTEGER REFERENCES resource(id) UNIQUE,
-    borrower_id INTEGER REFERENCES borrower(id),
-    /*date_issued DATE NOT NULL,
-    date_due DATE NOT NULL,*/
-    PRIMARY KEY(resource_id, borrower_id)
+    resource_id INTEGER REFERENCES resource(id) PRIMARY KEY,
+    borrower_id INTEGER REFERENCES borrower(id) NOT NULL,
+    date_issued DATE NOT NULL,
+    date_due DATE NOT NULL
 );
 
 /*
@@ -167,3 +166,8 @@ CREATE TABLE resource_sh (
 CREATE TABLE genre (
     name VARCHAR(20) PRIMARY KEY
 );
+
+CREATE TABLE setting (
+    id INTEGER PRIMARY KEY,
+    loan_duration INTEGER CHECK (loan_duration >= 0)
+)

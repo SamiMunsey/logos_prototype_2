@@ -1,6 +1,22 @@
 <?php 
     $root = $_SERVER['DOCUMENT_ROOT'];
-    $title = "Circulate - Issue resources";
+    $title = "Issue loans";
+    include_once $root."/logos/model/circulate/read.php";
+
+    //--- SETTING DATES --//
+
+     //get today's date and set it to an instance of the DateTime object, which can be modified as required
+        date_default_timezone_set('GMT');
+        $date = date('Y-m-d');
+        $today_date = new DateTime($date);
+    //get the loan duration set by the user in 'Settings'...
+        $loan_duration = $current_settings['loan_duration'];
+    //..and use it to set the due date  
+        $due_dateStr = "+$loan_duration day";
+        $due_date = $today_date->modify($due_dateStr);
+    //Finally format the due date so it can be sent to the database
+        $date_due = $due_date->format('Y-m-d');
+    
 ?>
 
 
@@ -43,7 +59,7 @@
     <div  class="circulate-searchbar-div">
         <!--The search bar to look for the borrower: -->
         <img src="/logos/view/media/mag.svg.png" id="homelogo"> <input type="text" name= "id" value="Search borrower ID" class="small-search-box">
-        <button type"submit" name="find-borrower-submit">Go</button>
+        <button type="submit" name="find-borrower-submit">Go</button>
     </div>
 </form>
 
@@ -75,7 +91,7 @@ $infoArray = explode("%z4",$info);
     </tr>
     <tr>
         <td><label for="dob">Date of birth:</label></td>
-        <td colspan="3"><input type="text" name="dob" class="medium-input" value="<?= isset($infoArray[7]) ? htmlentities($infoArray[7]) : '' ?>"></td>
+        <td colspan="3"><input type="date" name="dob" class="medium-input" value="<?= isset($infoArray[7]) ? htmlentities($infoArray[7]) : '' ?>"></td>
     </tr>
 
     
@@ -135,9 +151,11 @@ if($infoArray[0] != 0) {
 
 <form method="post" action="/logos/model/circulate/create_loan.php">
     <!--Hidden fields to call on the borrower and resource IDs: -->
-    <input type="text" name="resource_id" value="<?= isset($set_r_id) ? htmlentities($set_r_id) : '' ?>">
-    <input type="text" name="borrower_id" value="<?= isset($infoArray[4]) ? htmlentities($infoArray[4]) : '' ?>">
-    <button type=>Issue resource</button>
+    <input type="hidden" name="resource_id" value="<?= isset($set_r_id) ? htmlentities($set_r_id) : '' ?>">
+    <input type="hidden" name="borrower_id" value="<?= isset($infoArray[4]) ? htmlentities($infoArray[4]) : '' ?>">
+    <input type="hidden" name="date_issued" value="<?=$date?>">
+    <input type="hidden" name="date_due" value="<?=$date_due?>">
+    <button type="submit">Issue resource</button>
 </form>
 
 
@@ -146,7 +164,7 @@ if($infoArray[0] != 0) {
 
 <!--- table to display borrower's current loans ---->
 
-<?php include_once $root."/logos/model/circulate/read.php"; ?>
+
 
 <table>
     <tr>
@@ -167,14 +185,18 @@ if($infoArray[0] != 0) {
     </tr>
     <tr id="grey_row">
         <td id="ten">Resource ID</td>
-        <td id="thirty">Title</td>
+        <td id="forty">Title</td>
+        <td id="ten">Date issued</td>
+        <td id="ten">Date due</td>
     </tr>
         <?php foreach ($loansInformation as $loan) : ?>
             <?php if(isset($infoArray[4])) : ?>
              <?php if ($loan['borrower_id'] == $infoArray[4]) : ?>
                 <tr style="text-align: center">
                     <td><?= htmlentities($loan['resource_id']) ?></td>                    
-                    <td><?= htmlentities($loan['title']) ?></td>                      
+                    <td><?= htmlentities($loan['title']) ?></td>                   
+                    <td><?= htmlentities($loan['date_issued']) ?></td>                     
+                    <td><?= htmlentities($loan['date_due']) ?></td>                         
                 </tr>
             <?php endif; ?>
         <?php endif; ?>

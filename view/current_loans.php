@@ -36,16 +36,16 @@
         <td id="ten">Resource ID</td>
         <td id="forty">Title</td>
         <td id="ten">Borrower ID</td>
-        <td>Borrower surname</td>
-        <td>Borrower forename</td>
+        <td id="thirty">Borrower name</td>
+        <td id="ten">Date due</td>
     </tr>
     <?php foreach ($loansInformation as $loan) : ?>
         <tr style="text-align: center">
             <td><?= htmlentities($loan['resource_id']) ?></td>                    
             <td><?= htmlentities($loan['title']) ?></td>                      
             <td><?= htmlentities($loan['borrower_id']) ?></td>                      
-            <td><?= htmlentities($loan['surname']) ?></td>                      
-            <td><?= htmlentities($loan['forename']) ?></td>
+            <td><?= htmlentities($loan['forename'])." ".htmlentities($loan['surname']) ?></td>                       
+            <td><?= htmlentities($loan['date_due']) ?></td>    
         </tr>
     <?php endforeach; ?>
 </table>

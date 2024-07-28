@@ -1,7 +1,7 @@
 <?php 
     $root = $_SERVER['DOCUMENT_ROOT'];
     include $root."/logos/model/circulate/read.php"; 
-    $title = "Bulk return resources"; 
+    $title = "Return loans"; 
 ?>
 
 <!DOCTYPE html>
